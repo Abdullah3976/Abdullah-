@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>مراحل الإخصاب – Dr. Mai Elhalfawy</title>
+<style>
+body {
+    margin:0;
+    padding:20px;
+    font-family: Arial, sans-serif;
+    background: linear-gradient(135deg,#0b1a2d,#1a3b5d);
+    color:#fff;
+    text-align:center;
+}
+h1 {
+    font-size:2em;
+    margin-bottom:15px;
+    text-shadow:2px 2px 8px #000;
+}
+#svgContainer {
+    width:90%;
+    max-width:700px;
+    margin:auto;
+}
+svg { width:100%; height:auto; }
+#textBox {
+    margin-top:20px;
+    font-size:1.1em;
+    line-height:1.8;
+    min-height:200px;
+    background: rgba(0,0,0,0.3);
+    padding:15px;
+    border-radius:15px;
+    text-align:right;
+}
+button {
+    padding:12px 25px;
+    margin:10px;
+    font-size:1.1em;
+    font-weight:bold;
+    border:none;
+    border-radius:15px;
+    cursor:pointer;
+    color:#fff;
+    background: linear-gradient(135deg,#ff6b9e,#ffcc00,#6bffb8,#66ccff);
+    background-size:400% 400%;
+    transition: all 0.35s ease;
+}
+button:hover { transform: scale(1.05); box-shadow:0 0 20px rgba(255,255,255,0.6);}
+#author { font-size:0.55em; color:#ccc; margin-top:10px;}
+</style>
+</head>
+<body>
+
+<h1>مراحل الإخصاب في النباتات الزهرية</h1>
+
+<div id="svgContainer">
+<svg viewBox="0 0 700 500">
+    <!-- الميسم والقلم -->
+    <rect x="340" y="50" width="20" height="150" fill="#fff" opacity="0.8" id="styleStigma"/>
+    <ellipse cx="350" cy="50" rx="30" ry="15" fill="#ffe066" opacity="0" id="stigma"/>
+    
+    <!-- البياض -->
+    <rect x="345" y="200" width="10" height="200" fill="#fff" opacity="0.6" id="style"/>
+    
+    <!-- حبة اللقاح -->
+    <circle id="pollen" cx="350" cy="0" r="15" fill="#ffcc00" opacity="0"/>
+    
+    <!-- أنبوب اللقاح -->
+    <line id="tube" x1="350" y1="0" x2="350" y2="200" stroke="#ffcc00" stroke-width="5" opacity="0"/>
+    
+    <!-- البويضة -->
+    <ellipse id="ovule" cx="350" cy="450" rx="50" ry="70" fill="#ff8aa8" opacity="0"/>
+    
+    <!-- الزيجوت -->
+    <circle id="zygote" cx="350" cy="450" r="25" fill="#ff4455" opacity="0"/>
+    
+    <!-- النسيج الغذائي الثلاثي -->
+    <ellipse id="endosperm" cx="350" cy="450" rx="60" ry="40" fill="#66ffcc" opacity="0"/>
+</svg>
+</div>
+
+<div id="textBox">اضغط التالي لبدء العرض</div>
+<button onclick="nextStep()">التالي</button>
+<button onclick="resetAll()">إعادة</button>
+<button onclick="goHome()">الرجوع للصفحة الرئيسية</button>
+<div id="author">Created by Abdullah</div>
+
+<script>
+let s=0;
+function fadeIn(id){ document.getElementById(id).style.transition="1.3s"; document.getElementById(id).style.opacity=1; }
+function fadeOut(id){ document.getElementById(id).style.transition="1s"; document.getElementById(id).style.opacity=0; }
+
+function nextStep(){
+    s++;
+    if(s==1){ fadeIn('stigma'); fadeIn('styleStigma'); textBox.innerHTML="1️⃣ التلقيح: نقل حبوب اللقاح من المتوك إلى الميسم."; }
+    else if(s==2){ fadeIn('pollen'); textBox.innerHTML="2️⃣ إنبات حبة اللقاح على الميسم وبدء نمو أنبوب اللقاح."; }
+    else if(s==3){ fadeIn('tube'); textBox.innerHTML="3️⃣ نمو أنبوب اللقاح داخل قناة الميسم ومروره عبر المبيض باتجاه البويضة."; }
+    else if(s==4){ fadeIn('ovule'); textBox.innerHTML="4️⃣ دخول النواة الذكرية عبر أنبوب اللقاح إلى البويضة."; }
+    else if(s==5){ fadeIn('zygote'); textBox.innerHTML="5️⃣ الانقسام المزدوج: النواة الذكرية الأولى تندمج مع البويضة → تكوين الزيجوت (2n)."; }
+    else if(s==6){ fadeIn('endosperm'); textBox.innerHTML="6️⃣ النواة الذكرية الثانية تندمج مع النواتين القطبيتين → تكوين النسيج الغذائي الثلاثي (3n)."; }
+    else{textBox.innerHTML="✅ تم العرض بالكامل"; }
+}
+
+function resetAll(){
+    s=0;
+    ['stigma','styleStigma','pollen','tube','ovule','zygote','endosperm'].forEach(id=>document.getElementById(id).style.opacity=0);
+    textBox.innerHTML="اضغط التالي لبدء العرض";
+}
+
+function goHome(){
+    window.location.href="index.html"; // ضع اسم الصفحة الرئيسية
+}
+</script>
+
+</body>
+</html>

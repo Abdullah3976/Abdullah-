@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>كويز التكاثر في النباتات الزهرية</title>
+<style>
+    body {
+        background:#0c1a2b;
+        color:#fff;
+        font-family:Arial, sans-serif;
+        text-align:center;
+        padding:20px;
+    }
+    h1 {
+        color:#ffd700;
+        margin-bottom:20px;
+    }
+    .quiz-container {
+        background:#1f2d47;
+        padding:20px;
+        border-radius:12px;
+        max-width:600px;
+        margin:auto;
+        box-shadow:0 0 15px #000;
+    }
+    .question {
+        font-size:20px;
+        margin-bottom:15px;
+    }
+    .options button {
+        display:block;
+        width:100%;
+        padding:12px;
+        margin:8px 0;
+        font-size:18px;
+        border:none;
+        border-radius:10px;
+        background:#ff6b9e;
+        color:#000;
+        cursor:pointer;
+        font-weight:bold;
+        transition:0.3s;
+    }
+    .options button:hover {
+        background:#ff85b0;
+    }
+    #feedback {
+        margin-top:15px;
+        font-size:18px;
+        font-weight:bold;
+    }
+    #score {
+        font-size:22px;
+        margin-top:20px;
+        color:#00ff00;
+    }
+    #restart, #home {
+        padding:10px 20px;
+        font-size:18px;
+        border:none;
+        border-radius:10px;
+        background:#ffd700;
+        color:#000;
+        cursor:pointer;
+        margin-top:20px;
+        margin-right:10px;
+    }
+</style>
+</head>
+<body>
+
+<h1>كويز التكاثر في النباتات الزهرية</h1>
+<div class="quiz-container">
+    <div id="questionBox"></div>
+    <div class="options" id="optionsBox"></div>
+    <div id="feedback"></div>
+    <div id="score"></div>
+    <button id="restart" onclick="restartQuiz()" style="display:none;">أعد المحاولة</button>
+    <button id="home" onclick="goHome()">الصفحة الرئيسية</button>
+</div>
+
+<script>
+const quiz = [
+    {q:"ما هو عضو التكاثر المذكر في الزهرة؟", o:["الكربلة","السداة","البتلة","الميسم"], a:1},
+    {q:"ما اسم عملية نقل حبوب اللقاح من المتك إلى الميسم؟", o:["الإخصاب","التلقيح","الإنبات","الإثمار"], a:1},
+    {q:"ماذا يحدث بعد وصول حبة اللقاح إلى الميسم؟", o:["خروج أنبوب لقاحي → إنبات حبة اللقاح","تكوين البويضة","تكوين الجنين","تكوين الثمرة"], a:0},
+    {q:"عند نمو أنبوب اللقاح، أين ينمو؟", o:["داخل المتك","داخل القلم ثم المبيض → باتجاه البويضة","داخل البتلات","خارج الزهرة"], a:1},
+    {q:"في الإخصاب المزدوج، ماذا تكون نتيجة اندماج النواة الذكرية الأولى مع البويضة؟", o:["نسيج غذائي","زيجوت (جنين)","بذرة","أنبوب لقاح"], a:1},
+    {q:"ماذا تنتج النواة الذكرية الثانية عند اندماجها مع النواتين القطبيتين؟", o:["زيجوت","أنبوب لقاح","نسيج غذائي ثلاثي الصيغة","جدار بذرة"], a:2},
+    {q:"أين تتكون الجاميت الأنثوي (female gametophyte)؟", o:["داخل المتك","في البتلات","داخل الميسم","داخل المبيض → داخل البويضة"], a:3},
+    {q:"أي مما يلي ليس من مكونات البويضة قبل الإخصاب؟", o:["نوى قطبية","بويضة","أنبوب لقاحي","خلايا مساعدة"], a:2},
+    {q:"لماذا يُفضّل أن يكون التلقيح عبر حشرات؟", o:["لأن الرياح تنقل حبوب لقاح بتركيز كبير","لأن حبوب اللقاح كبيرة ولزجة وتحتاج وسيط لنقلها","لأن التلقيح بالحشرات أسرع","لأن يقلل التنوع الوراثي"], a:1},
+    {q:"إذا انكسر جدار أحد الأكياس الميكروسبورية قبل النضج، ماذا يحدث؟", o:["تتكون حبة لقاح ناضجة","تنمو البويضة فقط","لا تتكون حبوب لقاح → لا إخصاب محتمل","يتحول النبات إلى نبات لا جنسي"], a:2}
+];
+
+let current=0;
+let score=0;
+
+function loadQuestion(){
+    if(current<quiz.length){
+        document.getElementById('feedback').innerHTML="";
+        document.getElementById('score').innerHTML="";
+        const q=quiz[current];
+        document.getElementById('questionBox').innerHTML="<div class='question'>"+q.q+"</div>";
+        const opts=q.o.map((opt,i)=>`<button onclick='checkAnswer(${i})'>${opt}</button>`).join("");
+        document.getElementById('optionsBox').innerHTML=opts;
+    } else {
+        document.getElementById('questionBox').innerHTML="";
+        document.getElementById('optionsBox').innerHTML="";
+        document.getElementById('feedback').innerHTML="انتهى الاختبار!";
+        document.getElementById('score').innerHTML="درجتك: "+score+" / "+quiz.length;
+
+        let percent = (score/quiz.length)*100;
+        let lowMsgs = ["حاول تاني، متقلقش، كلنا معاك 💪","مفيش مشكلة، كل محاولة هتقربك أكتر 👍","ما تيأسش، التعلم خطوة خطوة 🚀"];
+        let midMsgs = ["ممتاز، حاول تحسن شوية، انت قريب من التميز ⭐","شغال جامد، كمل كده هتوصل للأفضل 🌟","تحسن ملحوظ، استمر هتوصل للدرجة العالية 💡"];
+        let highMsgs = ["رائع جدًا! استمر هتوصل لأعلى المستويات 🎉","أداء ممتاز! كمل كده هتوصل للقمة 🏆","مستوى ممتاز! فخور بيك 👏"];
+
+        let msg="";
+        if(percent<50){
+            msg=lowMsgs[Math.floor(Math.random()*lowMsgs.length)];
+        } else if(percent<80){
+            msg=midMsgs[Math.floor(Math.random()*midMsgs.length)];
+        } else {
+            msg=highMsgs[Math.floor(Math.random()*highMsgs.length)];
+        }
+        document.getElementById('feedback').innerHTML += "<br>"+msg;
+        document.getElementById('restart').style.display="inline-block";
+    }
+}
+
+function checkAnswer(choice){
+    const correct=quiz[current].a;
+    if(choice===correct){
+        document.getElementById('feedback').innerHTML="<span style='color:#00ff00'>صح ✅</span>";
+        score++;
+    } else {
+        document.getElementById('feedback').innerHTML="<span style='color:#ff4444'>غلط ❌</span> الإجابة الصحيحة: "+quiz[current].o[correct];
+    }
+    current++;
+    setTimeout(loadQuestion,1000);
+}
+
+function restartQuiz(){
+    current=0;
+    score=0;
+    document.getElementById('restart').style.display="none";
+    loadQuestion();
+}
+
+function goHome(){
+    // غير الرابط ده حسب صفحة الرئيسية عندك
+    window.location.href = "index.html";
+}
+
+// بدء الكويز
+loadQuestion();
+</script>
+
+</body>
+</html>

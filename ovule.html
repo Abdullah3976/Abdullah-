@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>تكوين البويضة – Dr. Mai Elhalfawy</title>
+<style>
+body {
+    margin:0;
+    padding:20px;
+    font-family: Arial, sans-serif;
+    background: linear-gradient(135deg,#060b17,#1a2a4d);
+    color:#fff;
+    text-align:center;
+}
+h1 {
+    font-size:2.2em;
+    margin-bottom:15px;
+    text-shadow:2px 2px 8px #000;
+}
+#svgContainer {
+    width:90%;
+    max-width:700px;
+    margin:auto;
+}
+svg { width:100%; height:auto; }
+#textBox {
+    margin-top:20px;
+    font-size:1.1em;
+    line-height:1.8;
+    min-height:220px;
+    background: rgba(0,0,0,0.3);
+    padding:15px;
+    border-radius:15px;
+    text-align:right;
+}
+button {
+    padding:12px 25px;
+    margin:10px;
+    font-size:1.1em;
+    font-weight:bold;
+    border:none;
+    border-radius:15px;
+    cursor:pointer;
+    color:#fff;
+    background: linear-gradient(135deg,#ff6b9e,#ffcc00,#6bffb8,#66ccff);
+    background-size:400% 400%;
+    transition: all 0.35s ease;
+}
+button:hover { transform: scale(1.05); box-shadow:0 0 20px rgba(255,255,255,0.6);}
+#author { font-size:0.55em; color:#ccc; margin-top:10px;}
+</style>
+</head>
+<body>
+
+<h1>تطور البويضة داخل المبيض</h1>
+
+<div id="svgContainer">
+<svg viewBox="0 0 600 800">
+    <!-- المبيض -->
+    <ellipse cx="300" cy="400" rx="240" ry="340" fill="#0e1d33" stroke="#52739c" stroke-width="10"/>
+    
+    <!-- الكيس الجنيني -->
+    <ellipse id="sac" cx="300" cy="400" rx="150" ry="220" fill="#152944" stroke="#3c5f85" stroke-width="6" opacity="0"/>
+    
+    <!-- الخلية الأم -->
+    <circle id="mmc" cx="300" cy="400" r="50" fill="#ffe9ef" stroke="#ff99af" stroke-width="4" opacity="0"/>
+    
+    <!-- 4 نوى -->
+    <g id="meiosis4" opacity="0">
+        <circle cx="250" cy="360" r="25" fill="#fff" stroke="#ff9bb5" stroke-width="3"/>
+        <circle cx="350" cy="360" r="25" fill="#fff" stroke="#ff9bb5" stroke-width="3"/>
+        <circle cx="250" cy="440" r="25" fill="#fff" stroke="#ff9bb5" stroke-width="3"/>
+        <circle cx="350" cy="440" r="25" fill="#fff" stroke="#ff9bb5" stroke-width="3"/>
+    </g>
+    
+    <!-- نواة واحدة -->
+    <circle id="single" cx="300" cy="400" r="32" fill="#fff" stroke="#ff9bb5" stroke-width="3" opacity="0"/>
+    
+    <!-- الخلايا المساعدة (8 نوى) -->
+    <g id="eight" opacity="0">
+        <circle cx="300" cy="270" r="15" fill="#ffe066"/>
+        <circle cx="260" cy="310" r="15" fill="#ffe066"/>
+        <circle cx="340" cy="310" r="15" fill="#ffe066"/>
+        <circle cx="300" cy="350" r="15" fill="#ffe066"/>
+        <circle cx="300" cy="450" r="15" fill="#ffe066"/>
+        <circle cx="260" cy="490" r="15" fill="#ffe066"/>
+        <circle cx="340" cy="490" r="15" fill="#ffe066"/>
+        <circle cx="300" cy="530" r="15" fill="#ffe066"/>
+    </g>
+    
+    <!-- الترتيب النهائي -->
+    <g id="final" opacity="0">
+        <circle cx="250" cy="310" r="20" fill="#ffd1dc"/>
+        <circle cx="300" cy="310" r="20" fill="#ff8aa8"/>
+        <circle cx="350" cy="310" r="20" fill="#ffd1dc"/>
+        <circle cx="285" cy="400" r="20" fill="#ffe066"/>
+        <circle cx="315" cy="400" r="20" fill="#ffe066"/>
+        <circle cx="250" cy="490" r="20" fill="#ffd1dc"/>
+        <circle cx="300" cy="490" r="20" fill="#ffd1dc"/>
+        <circle cx="350" cy="490" r="20" fill="#ffd1dc"/>
+    </g>
+</svg>
+</div>
+
+<div id="textBox">اضغط التالي لبدء العرض</div>
+<button onclick="nextStep()">التالي</button>
+<button onclick="resetAll()">إعادة</button>
+<button onclick="goHome()">الرجوع للصفحة الرئيسية</button>
+<div id="author">Created by Abdullah</div>
+
+<script>
+let s=0;
+function fadeIn(id){ document.getElementById(id).style.transition="1.3s"; document.getElementById(id).style.opacity=1; }
+function fadeOut(id){ document.getElementById(id).style.transition="1s"; document.getElementById(id).style.opacity=0; }
+
+function nextStep(){
+    s++;
+    if(s==1){ fadeIn('sac'); textBox.innerHTML="1️⃣ ظهور الكيس الجنيني داخل المبيض، محاط بالخلايا الداعمة."; }
+    else if(s==2){ fadeIn('mmc'); textBox.innerHTML="2️⃣ تكوين الخلية الأم للبويضات (MMC) داخل الكيس، تحتوي على 46 كروموسوم (2n)."; }
+    else if(s==3){ fadeIn('meiosis4'); fadeOut('mmc'); textBox.innerHTML="3️⃣ الخلية الأم تخضع لانقسام اختزالي → 4 نوى (23 كروموسوم لكل نواة)."; }
+    else if(s==4){ fadeOut('meiosis4'); fadeIn('single'); textBox.innerHTML="4️⃣ تموت ثلاث نوى ويبقى نواة واحدة لتكمل مراحل النضج."; }
+    else if(s==5){ fadeOut('single'); fadeIn('eight'); textBox.innerHTML="5️⃣ تكوين الخلايا المساعدة (8 نوى) لدعم البويضة أثناء النضج."; }
+    else if(s==6){ fadeOut('eight'); fadeIn('final'); textBox.innerHTML="6️⃣ الحالة النهائية: البويضة الناضجة تحتوي على كل الخلايا المساعدة والخلية الأم. جاهزة للتلقيح."; }
+    else{textBox.innerHTML="تم العرض بالكامل ✔";}
+}
+
+function resetAll(){
+    s=0;
+    ['sac','mmc','meiosis4','single','eight','final'].forEach(id=>document.getElementById(id).style.opacity=0);
+    textBox.innerHTML="اضغط التالي لبدء العرض";
+}
+
+function goHome(){
+    window.location.href = "index.html"; // ضع اسم الصفحة الرئيسية هنا
+}
+</script>
+
+</body>
+</html>
